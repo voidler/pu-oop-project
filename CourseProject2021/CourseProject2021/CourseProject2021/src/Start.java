@@ -16,6 +16,39 @@ public class Start extends JPanel {
 
     }
 
+    private static void addAvatars(int x, int y, int i, int j, Graphics g) {
+        if (schemeArray[i][j].baseModel.getClass().getName() == "Elf"){
+            addElf(x , y , g);
+        }
+        else if(schemeArray[i][j].baseModel.getClass().getName() == "LittleMan"){
+            addLittleMan(x , y , g);
+
+        }
+        else if(schemeArray[i][j].baseModel.getClass().getName() == "Knight"){
+            addKnight(x , y , g);
+        }
+        else if (schemeArray[i][j].status != 0 )
+        {
+            addStatus(x , y , g);
+        }
+        else {
+            g.setColor(schemeArray[i][j].baseModel.color);
+            g.fillRect(x, y, 70, 70);
+            g.setColor(Color.black);
+            g.drawRect(x, y, 70, 70);
+        }
+    }
+
+    private static void addStatus(int x, int y, Graphics g) {
+        g.setColor(Color.red);
+        g.fillRect(x, y, 70, 70);
+        g.setColor(Color.black);
+        g.drawRect(x, y, 70, 70);
+        g.setColor(Color.black);
+        g.drawString("X", x + 30, y + 40);
+    }
+
+
     private static void addKnight(int x, int y, Graphics g) {
         g.setColor(Color.white);
         g.fillRect(x, y, 70, 70);
