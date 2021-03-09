@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Start extends JPanel {
 
@@ -179,5 +181,115 @@ public class Start extends JPanel {
             }
         }
         return avatars;
+    }
+
+    private static void addActionWindows(Graphics g , int x , int y , String[] arr) {
+        g.setColor(Color.red);
+        g.drawString("Actions", x, y -100);
+        for (int index = 0; index < 3; index++) {
+            avatar[index] = new AvatarPosition(x, y, x + 70, y + 70, null, arr[index]);
+            g.setColor(Color.white);
+            g.fillRect(x, y, 70, 70);
+            g.setColor(Color.black);
+            g.drawRect(x, y, 70, 70);
+            g.setColor(Color.red);
+            g.drawString(arr[index], x + 30, y + 40);
+            x += 80;
+        }
+    }
+
+
+    public static boolean checkAvatarCount() {
+        int count = 0 ;
+        for(int i = 0; i < 7; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (schemeArray[i][j].baseModel.getClass().getName() != "BaseModel") {
+                    count++;
+                }
+            }
+        }
+        if (count == 12)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private static void refreshPage() {
+        createModels();
+        createColorScheme();
+        createDangerZone();
+
+    }
+
+    private static void createDangerZone() {
+        int max = 6 ;
+        Random random  = new Random();
+        for (int index = 0 ; index < max ; index ++)
+        {
+            int x = ThreadLocalRandom.current().nextInt(2, 5);
+            int y = random.nextInt(7) ;
+            if (schemeArray[x][y].danger == 1)
+            {
+                max ++;
+                continue;
+            }
+            else
+            {
+                schemeArray[x][y].danger = 1;
+            }
+        }
+    }
+
+    private static void createModels() {
+        for (int i  = 0 ; i < 7 ; i++)
+        {
+            for (int j = 0 ; j < 9 ; j++)
+            {
+                schemeArray[i][j] = new Scheme(0,0,0,0,new BaseModel(null));
+            }
+        }
+    }
+
+    private static void createColorScheme() {
+        boolean status = true;
+        for (int index = 0 ; index < 2 ; index++)
+        {
+            createBattleElement(status, index , 1);
+            status = false;
+        }
+        for (int index = 2 ; index < 5 ; index++)
+        {
+            for (int index_x = 0 ; index_x < 9 ; index_x++) {
+                schemeArray[index][index_x].baseModel.color = Color.lightGray;
+            }
+        }
+        status = true;
+        for (int index = 5 ; index < 7 ; index++)
+        {
+            createBattleElement(status, index,2);
+            status = false;
+        }
+    }
+
+    private static void createBattleElement(boolean status, int index, int playerMode) {
+        for (int index_x = 0 ; index_x < 9; index_x++)
+        {
+            if (status)
+            {
+                schemeArray[index][index_x].player = playerMode;
+                schemeArray[index][index_x].baseModel.color = Color.BLACK;
+                status = false;
+            }
+            else
+            {
+                schemeArray[index][index_x].player = playerMode;
+                schemeArray[index][index_x].baseModel.color = Color.gray;
+                status = true;
+            }
+        }
     }
 }
