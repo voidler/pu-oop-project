@@ -16,6 +16,61 @@ public class Start extends JPanel {
 
     public static void main(String[] args) {
 
+        schemeArray = new Scheme[7][9];
+        createJFrame();
+        refreshPage();
+    }
+
+    public  void paint(Graphics g){
+        gs = g;
+        addElements(g , false );
+    }
+    public  static void addElements(Graphics g, boolean modes) {
+        if (modes) {
+            frame.repaint();
+        }
+        int x = 0 ;
+        int y = 0;
+        for(int i = 0; i < 7; i++) {
+            for (int j = 0; j < 9; j++) {
+                addAvatars(x , y , i , j , g );
+                addMovePixels(x, y , i , j , g);
+                if (schemeArray[i][j].attachScheme == 1)
+                {
+                    g.setColor(Color.red);
+                    g.fillRect(x, y, 70, 70);
+                    g.setColor(Color.black);
+                    g.drawRect(x, y, 70, 70);
+                }
+                schemeArray[i][j].startX = x;
+                schemeArray[i][j].startY = y;
+                schemeArray[i][j].endX = x+70;
+                schemeArray[i][j].endY = y+70;
+
+                x+=70;
+            }
+            y+= 70;
+            x = 0 ;
+        }
+        addActions(g);
+        addPlayerOneInfoPoint(700,  0 ,g );
+        addPlayerTwoInfoPoint(700,500,g);
+        checkForWinner();
+    }
+
+    private static void addActions(Graphics g) {
+        int y = 100;
+        int x = 700;
+        String[] arr = {"R", "D" , "E"};
+        String[] arr_action = {"Attack", "Move" , "Heat"};
+
+        if (checkAvatarCount()) {
+            addActionWindows(g, x, y,arr);
+        }
+        else
+        {
+            addActionWindows(g, x, y,arr_action);
+        }
     }
 
 
@@ -222,7 +277,7 @@ public class Start extends JPanel {
         createModels();
         createColorScheme();
         createDangerZone();
-
+        addElements(gs, true);
     }
 
     private static void createDangerZone() {
