@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,8 +15,8 @@ public class Start extends JPanel {
     public static int pointPlayer2 = 0;
     public static ArrayList<BaseModel> avatarDamage = new ArrayList<BaseModel>();
 
-    public static void main(String[] args) {
-
+    public  static void main(String[] args)
+    {
         schemeArray = new Scheme[7][9];
         createJFrame();
         refreshPage();
@@ -62,7 +63,7 @@ public class Start extends JPanel {
         int y = 100;
         int x = 700;
         String[] arr = {"R", "D" , "E"};
-        String[] arr_action = {"Attack", "Move" , "Heat"};
+        String[] arr_action = {"Attack", "Move" , "Heal"};
 
         if (checkAvatarCount()) {
             addActionWindows(g, x, y,arr);
@@ -72,7 +73,6 @@ public class Start extends JPanel {
             addActionWindows(g, x, y,arr_action);
         }
     }
-
 
     private static void addMovePixels(int x, int y, int i, int j, Graphics g) {
         if(schemeArray[i][j].number_of_move != 0 )
@@ -126,7 +126,6 @@ public class Start extends JPanel {
         g.drawString("X", x + 30, y + 40);
     }
 
-
     private static void addKnight(int x, int y, Graphics g) {
         g.setColor(Color.white);
         g.fillRect(x, y, 70, 70);
@@ -146,24 +145,13 @@ public class Start extends JPanel {
 
     }
 
-    private static void addElf(int x, int y, Graphics g) {
+    private static void addElf(int x , int y, Graphics g) {
         g.setColor(Color.white);
         g.fillRect(x, y, 70, 70);
         g.setColor(Color.black);
         g.drawRect(x, y, 70, 70);
         g.setColor(Color.black);
         g.drawString("E", x + 30, y + 40);
-    }
-
-    private static void createJFrame() {
-        frame = new JFrame();
-        frame.setSize(1000, 600);
-        frame.getContentPane().add(new Start());
-        frame.setLocationRelativeTo(null);
-        frame.setBackground(Color.black);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        Component mouseClick = new MouseController();
     }
 
     private static void addPlayerTwoInfoPoint(int x , int y , Graphics g) {
@@ -238,6 +226,7 @@ public class Start extends JPanel {
         return avatars;
     }
 
+
     private static void addActionWindows(Graphics g , int x , int y , String[] arr) {
         g.setColor(Color.red);
         g.drawString("Actions", x, y -100);
@@ -273,6 +262,17 @@ public class Start extends JPanel {
         }
     }
 
+    private static void createJFrame() {
+        frame = new JFrame();
+        frame.setSize(1000,600);
+        frame.getContentPane().add(new Start());
+        frame.setLocationRelativeTo(null);
+        frame.setBackground(Color.black);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        Component mouseClick = new MouseController()  ;
+        frame.addMouseListener((MouseListener) mouseClick);
+    }
     private static void refreshPage() {
         createModels();
         createColorScheme();
